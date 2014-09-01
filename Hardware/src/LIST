@@ -1,0 +1,59 @@
+# A list of all HDL project sources relative to the source directory.
+#
+# This file must be kept up-to-date. It is used when creating the project
+# hierarchy and when building the project.
+
+
+### Top-level
+Top.v
+
+
+### MIPS32 Processor
+MIPS32/Add.v
+MIPS32/ALU.v
+MIPS32/Compare.v
+MIPS32/Control.v
+MIPS32/CPZero.v
+MIPS32/Divide.v
+MIPS32/EXMEM_Stage.v
+MIPS32/Hazard_Detection.v
+MIPS32/IDEX_Stage.v
+MIPS32/IFID_Stage.v
+MIPS32/MemControl.v
+MIPS32/MEMWB_Stage.v
+MIPS32/Mux2.v
+MIPS32/Mux4.v
+MIPS32/Processor.v
+MIPS32/Register.v
+MIPS32/RegisterFile.v
+MIPS32/TrapDetect.v
+
+
+### Block RAM
+BRAM/BRAM_Wrapper.v
+BRAM/BRAM_64KB/BRAM_64KB.qip
+BRAM/Memory_Contents.mif
+
+
+### Clocks
+Clocks/PLL_50MHz_to_50MHz_100MHz.qip
+
+
+### UART
+UART/uart_bootloader_v2.v
+UART/uart_min.v
+UART/uart_tx.v
+UART/uart_rx.v
+UART/uart_clock.v
+Common/FIFO_NoFull_Count.v
+Common/SRAM.v
+
+
+### LEDs
+LED/LED.v
+
+
+### Switch debouncers
+Switch/Switches.v
+Switch/Switch_Filter.v
+

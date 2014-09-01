@@ -1,0 +1,31 @@
+README for MIPS32R1 Demo 1 : Assembly
+-------------------------------------
+
+Creator: Grant Ayers (ayers@cs.stanford.edu)
+Date:    1 June 2014
+
+
+Description
+-----------
+
+A minimal program consisting of only a few assembly instructions.
+Useful for testing individual instructions and general functional
+correctness of the processor.
+
+The default implementation writes the pattern '01010101' to eight
+LEDs at MMIO address 0xC0000000 (for SoC implementations which
+have LEDs and use this configuration).
+
+
+Demonstrates
+------------
+
+Basic functional correctness of the processor.
+
+
+Building and Running
+--------------------
+
+Edit the Makefile to point to the MIPS toolchain then run 'make'.
+Use the bootloader (or other means of initializing your memory)
+to send the resulting .bin file to the device.

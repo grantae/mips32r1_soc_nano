@@ -1,0 +1,85 @@
+Instructions for Creating a Quartus II Project for the DE0-Nano mips32r1 SoC
+----------------------------------------------------------------------------
+
+This directory contains the HDL source files for the MIPS32 processor and SoC
+as well as scripts to create and build the SoC using Altera's Quartus II
+software.
+
+
+Organization
+------------
+
+  README                    : This file
+  make_project.sh           : Creates the project (uses files from scripts/)
+  scripts/settings.tcl      : Project settings and constraints
+  scripts/Makefile.template : An incomplete project Makefile
+  src/                      : Processor and SoC HDL source files
+  src/LIST                  : An updated list of all required source files
+
+
+Requirements
+------------
+
+- You must have Altera's Quartus II software on your system (tested with 14.0).
+- Your path must include the Quartus II binaries. For example, if Quartus II
+  is installed in /opt/altera/14.0, then your path should include
+  /opt/altera/14.0/quartus/bin32 (or bin64). If you can run "quartus_sh" from
+  your command prompt, then you should be ready.
+- To program the board you need the USB Blaster drivers installed.
+  See the quartus/drivers folder in your Altera installation.
+- The scripts require make as well as a few standard Unix utilities
+  such as readlink, sed, and rm.
+
+
+Procedure
+---------
+
+Make sure you've read the Requirements section above!
+
+1. Create the project
+    ./make_project.sh
+
+2. Change into the project directory (default is "proj")
+    cd proj
+
+3. Build the project
+    make
+
+4. Send to your device
+    make send
+
+Once sent, the FPGA is configured with the MIPS32 SoC hardware and is running the
+default software app (specified in Memory_Contents.mif). This app moves a single
+lit LED from left to right on the board at varying speeds.
+
+
+Modifying the Hardware
+----------------------
+
+If you add or remove any HDL files from the project, update the LIST file in
+the source tree. Then run 'make' (or 'make send') within the project directory
+to build the project.
+
+
+Modifying the Software
+----------------------
+
+Method 1: Update the memory contents in the FPGA image
+  
+  You can directly modify 'Memory_Contents.mif' and rebuild/resend the project
+  to the device. To help, the software apps generate a '.hex.tsv' image
+  which can be pasted into the Quartus II mif editor when using the GUI tools.
+
+Method 2: Reprogram the instruction memory on a running device
+
+  The hardware image includes a UART bootloader which can reprogram the
+  instruction memory and reset the device. This can be much faster than
+  rebuilding an FPGA image each time you want to run different software.
+
+  On the DE0-Nano, the UART is located on GPIO-022 (pin 27, Tx-out) and
+  GPIO-023 (pin 28, Rx-in). The UART acts as a XUM bootloader, which is
+  a protocol developed for the early versions of the mips32r1 SoC.
+
+  Unfortunately, I have not had time to create a UNIX version of the host-side
+  bootloader software, so you can use the Windows-based C# version from the
+  mips32r1_xum project (on github) or write your own.

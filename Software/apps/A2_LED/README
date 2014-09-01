@@ -1,0 +1,30 @@
+README for MIPS32R1 SoC (DE0-Nano) Demo 2 : LEDs
+------------------------------------------------
+
+Creator: Grant Ayers (ayers@cs.stanford.edu)
+Date:    31 August 2014
+
+
+Description
+-----------
+
+This is a "Hello, World!" demo for the DE0-Nano FGPA board.
+It moves a single lit LED from left to right on the board at
+varying frequencies.
+
+
+Demonstrates
+------------
+
+- Basic functional correctness of the processor and MMIO interfaces.
+- Approximately 200 instructions of 35 types. Continuous execution.
+- Timer interrupt functionality.
+- General CP0 management and exception/interrupt mechanisms.
+
+
+Building and Running
+--------------------
+
+Edit the Makefile to point to the MIPS toolchain then run 'make'.
+Use the bootloader (or other means of initializing your memory)
+to send the resulting .bin file to the device.

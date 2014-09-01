@@ -1,0 +1,60 @@
+PROJECT := TODO_PROJECT_TODO
+SOURCES := $(shell sed -e '/^\s*$$i/d' -e '/\#/d' TODO_SOURCES_TODO/LIST)
+ASSIGNMENT_FILES := $(PROJECT).qpf $(PROJECT).qsf
+
+all: smart.log $(PROJECT).asm.rpt $(PROJECT).sta.rpt
+
+send: smart.log $(PROJECT).asm.rpt $(PROJECT).sta.rpt
+	quartus_pgm -c USB-Blaster -m JTAG -o p\;$(PROJECT).sof
+
+clean:
+	@rm -rf $(PROJECT).asm.* $(PROJECT).fit.* $(PROJECT).flow.* $(PROJECT).map.* \
+	$(PROJECT).sta.* $(PROJECT).sof $(PROJECT).pof $(PROJECT).pin $(PROJECT).jdi \
+	map.chg fit.chg sta.chg asm.chg smart.log *.htm *.eqn db incremental_db \
+	PLLJ_PLLSPE_INFO.txt
+
+map: smart.log $(PROJECT).map.rpt
+fit: smart.log $(PROJECT).fit.rpt
+asm: smart.log $(PROJECT).asm.rpt
+sta: smart.log $(PROJECT).sta.rpt
+smart: smart.log
+
+MAP_ARGS := --family="Cyclone IV E"
+FIT_ARGS := --part=EP4CE22F17C6
+ASM_ARGS :=
+STA_ARGS :=
+
+STAMP = echo done >
+
+$(PROJECT).map.rpt: map.chg $(SOURCE_FILES)
+	@echo [Map] \> $(PROJECT).map.log
+	@quartus_map $(MAP_ARGS) $(PROJECT) &> $(PROJECT).map.log
+	@$(STAMP) fit.chg
+
+$(PROJECT).fit.rpt: fit.chg $(PROJECT).map.rpt
+	@echo [Fit] \> $(PROJECT).fit.log
+	@quartus_fit $(FIT_ARGS) $(PROJECT) &> $(PROJECT).fit.log
+	@$(STAMP) asm.chg
+	@$(STAMP) sta.chg
+
+$(PROJECT).asm.rpt: asm.chg $(PROJECT).fit.rpt
+	@echo [Asm] \> $(PROJECT).asm.log
+	@quartus_asm $(ASM_ARGS) $(PROJECT) &> $(PROJECT).asm.log
+
+$(PROJECT).sta.rpt: sta.chg $(PROJECT).fit.rpt
+	@echo [Sta] \> $(PROJECT).sta.log
+	@quartus_sta $(STA_ARGS) $(PROJECT) &> $(PROJECT).sta.log
+
+smart.log: $(ASSIGNMENT_FILES)
+	@quartus_sh --determine_smart_action $(PROJECT) > smart.log
+
+
+map.chg:
+	@$(STAMP) map.chg
+fit.chg:
+	@$(STAMP) fit.chg
+sta.chg:
+	@$(STAMP) sta.chg
+asm.chg:
+	@$(STAMP) asm.chg
+
